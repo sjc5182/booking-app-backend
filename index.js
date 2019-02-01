@@ -48,6 +48,29 @@ app.get('/food', (request, response) => {
   })
 });
 
+  
+  pool.connect((err, db, done) => {
+    if (err) {
+      return console.log(err);
+    }
+    else {
+  // const itemCount = '7';
+  // const ingredientName = 'Eggs';
+  // const id = Math.random().toFixed(3); 
+  // let values = [id, itemCount, ingredientName]
+      db.query('INSERT INTO public."FoodIngd" (id, "itemCount", "ingredientName") VALUES(5, 7, "Pork")', (err, table) =>{
+        done();
+        if(err){
+          return console.log(err);
+        }
+        else {
+          console.log('Inserted data success');
+          db.end();
+        }
+      })
+    }
+  }) 
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
