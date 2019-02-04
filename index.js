@@ -54,20 +54,21 @@ app.get('/food', (request, response) => {
       return console.log(err);
     }
     else {
-  // const itemCount = '7';
-  // const ingredientName = 'Eggs';
-  // const id = Math.random().toFixed(3); 
-  // let values = [id, itemCount, ingredientName]
-      db.query('INSERT INTO public."FoodIngd" (id, "itemCount", "ingredientName") VALUES(5, 7, "Pork")', (err, table) =>{
+      const itemCount = '9';
+      const ingredientName = 'Chicken';
+      const id = 21; 
+      let values = [id, itemCount, ingredientName]
+      db.query('INSERT INTO public."FoodIngd" (id, "itemCount", "ingredientName") VALUES($1, $2, $3)', [...values], (err, table) =>{
         done();
         if(err){
           return console.log(err);
         }
         else {
           console.log('Inserted data success');
-          db.end();
+          
         }
       })
+      
     }
   }) 
 
