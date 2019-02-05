@@ -51,10 +51,10 @@ app.get('/food', (request, response) => {
 });
 
 app.post('/create', (request, response) => {
-  const id = 36;
+  //const id = request.body.id;
   const itemCount = request.body.countValue;
   const ingredientName = request.body.targetList;
-  let values = [id, itemCount, ingredientName]
+  let values = [itemCount, ingredientName]
   
   pool.connect((err, db, done) => {
     if (err) {
@@ -62,21 +62,20 @@ app.post('/create', (request, response) => {
     }
     else {
     console.log(request.body);
-      db.query('INSERT INTO public."FoodIngd" (id, "itemCount", "ingredientName") VALUES($1, $2, $3)', [...values], (err, table) =>{
+      db.query('INSERT INTO public."FoodIngd" ("itemCount", "ingredientName") VALUES($1, $2)', [...values], (err, table) =>{
         done();
         if(err){
           return console.log(err);
         }
         else {
           console.log('Inserted data success');
-          
+          return response.status(200).send('add success')
         }
       })
       
     }
   }) 
 })
-  
 
 const PORT = process.env.PORT || 8000;
 
