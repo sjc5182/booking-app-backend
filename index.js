@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const { Pool, Client } = require('pg');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 
 const config = {
@@ -27,6 +28,7 @@ const pool = new Pool(config);
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/food', (request, response) => {
@@ -48,16 +50,18 @@ app.get('/food', (request, response) => {
   })
 });
 
+app.post('/create', (request, response) => {
+  const id = 36;
+  const itemCount = request.body.countValue;
+  const ingredientName = request.body.targetList;
+  let values = [id, itemCount, ingredientName]
   
   pool.connect((err, db, done) => {
     if (err) {
       return console.log(err);
     }
     else {
-      const itemCount = '9';
-      const ingredientName = 'Chicken';
-      const id = 21; 
-      let values = [id, itemCount, ingredientName]
+    console.log(request.body);
       db.query('INSERT INTO public."FoodIngd" (id, "itemCount", "ingredientName") VALUES($1, $2, $3)', [...values], (err, table) =>{
         done();
         if(err){
@@ -71,6 +75,8 @@ app.get('/food', (request, response) => {
       
     }
   }) 
+})
+  
 
 const PORT = process.env.PORT || 8000;
 
